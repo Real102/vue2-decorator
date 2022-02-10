@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
-import Home from '../views/Home.vue'
+import Layout from '@/layout/index.vue'
 
 Vue.use(VueRouter)
 
@@ -8,7 +8,16 @@ const routes: Array<RouteConfig> = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Layout,
+    meta: {},
+    redirect: '/index',
+    children: [
+      {
+        path: '/index',
+        name: 'Home',
+        component: () => import(/* webpackChunkName: "home" */ '@/views/Home.vue')
+      }
+    ]
   },
   {
     path: '/about',
