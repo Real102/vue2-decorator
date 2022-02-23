@@ -4,12 +4,15 @@ import Layout from '@/layout/index.vue'
 
 Vue.use(VueRouter)
 
-const routes: Array<RouteConfig> = [
+export type IMyRouterConfig = RouteConfig & {
+  expanded?: Boolean
+}
+
+export const routes: Array<IMyRouterConfig> = [
   {
     path: '/',
-    name: 'Home',
     component: Layout,
-    meta: {},
+    meta: { title: '首页' },
     redirect: '/index',
     children: [
       {
@@ -22,10 +25,30 @@ const routes: Array<RouteConfig> = [
   {
     path: '/about',
     name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
+    meta: { title: '关于', hideSideBar: true }
+  },
+  {
+    path: '/test',
+    component: Layout,
+    meta: { title: '测试' },
+    redirect: '/test/index',
+    children: [
+      {
+        path: '/test/index',
+        name: 'Test',
+        component: () => import(/* webpackChunkName: "test" */ '../views/test/index.vue')
+      },
+      {
+        path: '/test/time',
+        name: 'Time',
+        component: () => import(/* webpackChunkName: "test" */ '../views/test/time.vue')
+      }
+    ]
+  },
+  {
+    path: '*',
+    redirect: '/'
   }
 ]
 

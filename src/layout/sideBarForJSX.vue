@@ -12,71 +12,71 @@
     </item>
   </div>
 </template>
-<script>
+<script lang="ts">
 import item from './components/item.vue'
 import subItem from './components/subItem.vue'
-import { asyncRoutes } from '@/router/index'
-export default {
+import { routes } from '@/router/index'
+import { Component, Vue, Watch } from 'vue-property-decorator'
+import { IMyRouterConfig } from '@/router'
+@Component({
   name: 'SideBar',
   components: {
     item,
     subItem
-  },
-  data() {
-    return {
-      routerData: []
-    }
-  },
-  watch: {
-    $route: {
-      handler: function () {
-        this.$nextTick(() => {
-          // 刷新页面时，如果打开了某子页面，那么自动展开该父列
-          this.routerData.forEach(item => {
-            const res = item.children?.find(sub => sub.path === this.$route.path)
-            if (res) {
-              item.expanded = true
-            }
-          })
-        })
-      },
-      immediate: true,
-      deep: true
-    }
-  },
+  }
+})
+export default class SideBar extends Vue {
+  routerData: Array<IMyRouterConfig> = []
+
+  // 监听路由，刷新页面时，如果打开了某子页面，那么自动展开该父列
+  @Watch('$route', { immediate: true, deep: true })
+  watchRoute() {
+    this.$nextTick(() => {
+      this.routerData.forEach(item => {
+        const res = item.children?.find(sub => sub.path === this.$route.path)
+        if (res) {
+          item.expanded = true
+        }
+      })
+    })
+  }
+
   mounted() {
     this.routerData = []
-    asyncRoutes.forEach(rt => {
+    routes.forEach(rt => {
       // 处理路由格式，区分只有一个子页面和多个子页面的情况
       // 统一数据格式，便于遍历
       if (!['/404', '*'].includes(rt.path)) {
         if (!rt.meta?.hideSideBar) {
-          if (rt.children?.length > 1) {
+          const res = rt.children?.filter(i => !i.meta?.hideSideBar)
+          if (typeof res === 'object' && res.length > 1) {
+            // 这里判断是否有多个子路由，并且子路由都是要显示的
             this.routerData.push({
               path: rt.path,
               meta: rt.meta || {},
               expanded: false,
               children: rt.children
             })
-          } else if (rt.children?.length === 1) {
+          } else if (rt.children?.filter(i => !i.meta?.hideSideBar).length === 1) {
             const sub = rt.children[0]
             this.routerData.push({
               path: sub.path,
-              meta: Object.assign(rt.meta || {}, sub.meta)
+              meta: Object.assign(rt.meta, sub.meta),
+              expanded: false
             })
           }
         }
       }
     })
-  },
-  methods: {
-    handleExpand(path) {
-      this.routerData.forEach(i => {
-        if (i.path === path) {
-          i.expanded = !i.expanded
-        }
-      })
-    }
+  }
+
+  // 点击展开子项事件
+  handleExpand(path: string) {
+    this.routerData.forEach(i => {
+      if (i.path === path) {
+        i.expanded = !i.expanded
+      }
+    })
   }
 }
 </script>

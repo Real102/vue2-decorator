@@ -6,7 +6,7 @@ export default {
       required: true
     }
   },
-  render: function () {
+  render() {
     const { path, meta } = this.subRouteData
     return (
       <router-link to={path} active-class='activeSubItemClass'>

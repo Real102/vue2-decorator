@@ -13,7 +13,8 @@ export default {
       }
     }
   },
-  render: function () {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  render: function (h) {
     const { path, meta, children, expanded } = this.routeData
     const main = (
       <div class='item' style={{ height: expanded ? 'auto' : '50px' }}>

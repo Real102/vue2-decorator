@@ -3,10 +3,10 @@
 <template>
   <header class="topBar">
     <el-dropdown @command="handleDropdownCommand">
-      <div v-show="$store.state.user.userInfo.name" class="user">
-        <span class="user-name">{{ $store.state.user.userInfo.name }}</span>
+      <div v-show="userInfo.name" class="user">
+        <span class="user-name">{{ userInfo.name }}</span>
         <!-- TODO: icon未显示 -->
-        <i class="icon icon-i-arrow-small"></i>
+        <i class="el-icon-arrow-down"></i>
       </div>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item
@@ -21,39 +21,37 @@
   </header>
 </template>
 
-<script>
-export default {
-  name: 'TopBar',
-  data() {
-    return {
-      userName: 'admin',
-      dropdownList: [
-        {
-          name: '账号管理'
-        },
-        {
-          name: '退出'
-        }
-      ]
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
+import { UserModule } from '@/store/module/user'
+
+@Component({
+  name: 'TopBar'
+})
+export default class TopBar extends Vue {
+  // TODO: 需要修改下拉菜单选项及对应功能
+  userName = 'admin'
+  dropdownList = [
+    {
+      name: '账号管理'
+    },
+    {
+      name: '退出'
     }
-  },
-  created() {
-    // if (localStorage.getItem('token')) {
-    //  this.$store.dispatch('user/saveUserInfo')
-    // }
-  },
-  methods: {
-    handleDropdownCommand(dropdownItem) {
-      switch (dropdownItem.name) {
-        case '退出':
-          this.$store.dispatch('user/logout')
-          break
-        case '账号管理':
-          this.$router.push('/account')
-          break
-        default:
-          break
-      }
+  ]
+  get userInfo() {
+    return UserModule?.userInfo
+  }
+  handleDropdownCommand(dropdownItem: any) {
+    switch (dropdownItem.name) {
+      case '退出':
+        UserModule.logout
+        break
+      case '账号管理':
+        this.$router.push('/account')
+        break
+      default:
+        break
     }
   }
 }

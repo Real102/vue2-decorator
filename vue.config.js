@@ -23,6 +23,7 @@ module.exports = {
       patterns: [path.resolve(__dirname, './src/styles/_variables.less')]
     }
   },
+  transpileDependencies: ['vuex-module-decorators'],
   devServer: {
     host: 'localhost',
     port: 8082, // TODO: 设置端口
