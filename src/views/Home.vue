@@ -33,6 +33,7 @@ export default class Home extends Vue {
   // @namespace('Test').Mutation('SET_COUNT') setCount: any
   // @namespace('user').State userInfo!: IUserInfo
   created() {
+    // 动态module，通过import引入后直接使用
     console.log(UserModule.userInfo)
   }
 
