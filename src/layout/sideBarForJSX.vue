@@ -93,9 +93,13 @@ export default class SideBar extends Vue {
     height: 50px;
     overflow: hidden;
     background-color: rgb(84, 92, 100);
+    text-decoration: none;
   }
   .activeSubItemClass {
     height: 40px;
+  }
+  a {
+    text-decoration: none;
   }
 }
 </style>

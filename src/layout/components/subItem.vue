@@ -1,11 +1,10 @@
 <script>
-export default {
-  name: 'SubItem',
-  props: {
-    subRouteData: {
-      required: true
-    }
-  },
+import { Component, Vue, Prop } from 'vue-property-decorator'
+@Component({
+  name: 'subItem'
+})
+export default class subItem extends Vue {
+  @Prop({ required: true }) subRouteData
   render() {
     const { path, meta } = this.subRouteData
     return (

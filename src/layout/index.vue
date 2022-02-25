@@ -39,7 +39,7 @@ export default {
     left: 0;
     width: @sideBar-w;
     height: 100%;
-    box-shadow: 2px 0 4px 0 rgba(0, 21, 41, 0.12);
+    // box-shadow: 2px 0 4px 0 rgba(0, 21, 41, 0.12);
   }
   .wrap {
     position: fixed;

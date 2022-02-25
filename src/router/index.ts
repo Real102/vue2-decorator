@@ -37,12 +37,18 @@ export const routes: Array<IMyRouterConfig> = [
       {
         path: '/test/index',
         name: 'Test',
-        component: () => import(/* webpackChunkName: "test" */ '../views/test/index.vue')
+        component: () => import(/* webpackChunkName: "test" */ '../views/test/index.vue'),
+        meta: {
+          title: '测试页面1'
+        }
       },
       {
         path: '/test/time',
         name: 'Time',
-        component: () => import(/* webpackChunkName: "test" */ '../views/test/time.vue')
+        component: () => import(/* webpackChunkName: "test" */ '../views/test/time.vue'),
+        meta: {
+          title: '测试页面2'
+        }
       }
     ]
   },
