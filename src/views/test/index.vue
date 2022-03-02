@@ -24,3 +24,9 @@ export default class Test extends Vue {
   }
 }
 </script>
+<style lang="less" scoped>
+@import '~@/styles/sprite/sprite.less';
+.test {
+  color: @font-color;
+}
+</style>

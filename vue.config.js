@@ -1,6 +1,27 @@
 const path = require('path')
+const SpritesmithPlugin = require('webpack-spritesmith')
 // 用于pathrewrite，这样可以在setting文件统一设置接口前缀
 const prefixReg = '^' + process.env.VUE_APP_PROXY_PREFIX
+const templateFunction = function (data) {
+  var shared =
+    '.icon { display: inline-block; vertical-align: middle; background-image: url(I) }'.replace(
+      'I',
+      data.sprites[0].image
+    )
+
+  var perSprite = data.sprites
+    .map(function (sprite) {
+      return '.icon-N { width: Wpx; height: Hpx; background-position: Xpx Ypx; }'
+        .replace('N', sprite.name)
+        .replace('W', sprite.width)
+        .replace('H', sprite.height)
+        .replace('X', sprite.offset_x)
+        .replace('Y', sprite.offset_y)
+    })
+    .join('\n')
+
+  return shared + '\n' + perSprite
+}
 module.exports = {
   publicPath: './',
   outputDir: 'dist', // TODO: 修改为项目名称，便于打包构建
@@ -24,6 +45,37 @@ module.exports = {
       preProcessor: 'less',
       patterns: [path.resolve(__dirname, './src/styles/_variables.less')]
     }
+  },
+  chainWebpack: config => {
+    /* 拼接雪碧图 */
+    config.plugin('webpack-spritesmith').use(SpritesmithPlugin, [
+      {
+        src: {
+          cwd: path.resolve(__dirname, 'src/assets/sprite'),
+          glob: '*.png'
+        },
+        target: {
+          image: path.resolve(__dirname, 'src/styles/sprite/sprite.png'),
+          css: [
+            [
+              path.resolve(__dirname, 'src/styles/sprite/sprite.less'),
+              {
+                format: 'function_based_template'
+              }
+            ]
+          ]
+        },
+        apiOptions: {
+          // 在sprite.less文件中引用的图片地址
+          cssImageRef: '~@/styles/sprite/sprite.png'
+        },
+        customTemplates: {
+          // sprite样式模板
+          function_based_template: templateFunction
+        }
+      }
+    ])
+    return config
   },
   transpileDependencies: ['vuex-module-decorators'],
   devServer: {

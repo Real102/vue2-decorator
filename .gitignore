@@ -1,7 +1,8 @@
 .DS_Store
 node_modules
 /dist
-
+output.js
+/src/styles/sprite/
 
 # local env files
 .env.local

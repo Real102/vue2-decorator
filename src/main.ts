@@ -5,6 +5,9 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
+// 雪碧图样式文件
+import './styles/sprite/sprite.less'
+
 Vue.config.productionTip = false
 
 Vue.use(ElementUI)

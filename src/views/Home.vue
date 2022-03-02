@@ -2,7 +2,7 @@
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png" />
     <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
-
+    <i class="icon icon-1"></i>
     <button @click="handleChange">修改修改</button>
   </div>
 </template>
