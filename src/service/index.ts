@@ -13,12 +13,12 @@ const service = axios.create({
   baseURL
 })
 
-const EResCode = {
-  SUCCESS: 10200, // 接口请求成功
-  FAIL: 10500, // 接口请求失败
-  NOTLOGIN: 10001, // 没有登录
-  PARAMSERROR: 10002, // 请求参数有误
-  WITHOUTAUTH: 10400 // 没有权限
+enum EResCode {
+  SUCCESS = 10200, // 接口请求成功
+  FAIL = 10500, // 接口请求失败
+  NOTLOGIN = 10001, // 没有登录
+  PARAMSERROR = 10002, // 请求参数有误
+  WITHOUTAUTH = 10400 // 没有权限
 }
 
 service.interceptors.request.use(
@@ -39,7 +39,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => {
     const { status } = response
-    const { code } = response.data
+    const code = response.data.code
     if (status === 200) {
       switch (code) {
         case EResCode.SUCCESS:

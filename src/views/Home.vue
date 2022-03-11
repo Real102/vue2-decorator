@@ -4,6 +4,7 @@
     <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
     <i class="icon icon-1"></i>
     <button @click="handleChange">修改修改</button>
+    <el-button type="danger" size="small" @click="handleCaptcha">发送验证码</el-button>
   </div>
 </template>
 
@@ -35,10 +36,14 @@ export default class Home extends Vue {
   created() {
     // 动态module，通过import引入后直接使用
     console.log(UserModule.userInfo)
+    console.log(window)
   }
 
   handleChange() {
     TestModule.SET_COUNT(2)
+  }
+  handleCaptcha() {
+    this.$captcha()
   }
 }
 </script>
